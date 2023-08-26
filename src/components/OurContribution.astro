@@ -1,0 +1,97 @@
+---
+---
+
+<script>
+  import gsap from "gsap";
+  import Hls from "hls.js";
+  var video = document.querySelector("#video") as HTMLMediaElement;
+  const initVideoPlayer = () => {
+    // video.controls = true;
+    var videoSrc = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
+
+    if (Hls.isSupported() && video) {
+      console.log("is supported ");
+      var hls = new Hls();
+      hls.loadSource(videoSrc);
+      hls.attachMedia(video);
+      //   video.autoplay = true;
+    }
+    // HLS.js is not supported on platforms that do not have Media Source
+    // Extensions (MSE) enabled.
+    //
+    // When the browser has built-in HLS support (check using `canPlayType`),
+    // we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video
+    // element through the `src` property. This is using the built-in support
+    // of the plain video element, without using HLS.js.
+    //
+    // Note: it would be more normal to wait on the 'canplay' event below however
+    // on Safari (where you are most likely to find built-in HLS support) the
+    // video.src URL must be on the user-driven white-list before a 'canplay'
+    // event will be emitted; the last video event that can be reliably
+    // listened-for when the URL is not on the white-list is 'loadedmetadata'.
+    else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      video.src = videoSrc;
+    }
+  };
+
+  gsap.set(".yellow-ball", {
+    xPercent: -50,
+    yPercent: -50,
+    autoAlpha: 1,
+    scale: 0,
+  });
+
+  let xTo = gsap.quickTo(".yellow-ball", "x", {
+      duration: 0.1,
+      ease: "power3",
+    }),
+    yTo = gsap.quickTo(".yellow-ball", "y", { duration: 0.6, ease: "power3" });
+
+  const videoContainer = document.querySelector(".video-container");
+
+  const playButton = document.querySelector(".yellow-ball");
+  playButton?.addEventListener("click", () => {
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  });
+
+  initVideoPlayer();
+  videoContainer?.addEventListener("mouseover", () => {
+    gsap.to(".yellow-ball", {
+      scale: 1,
+      opacity: 1,
+      duration: 0.5,
+      overwrite: "auto",
+    });
+  });
+  videoContainer?.addEventListener("mouseout", () => {
+    console.log("leaving");
+    gsap.to(".yellow-ball", {
+      scale: 0,
+      opacity: 0,
+      //   duration: 0.1,
+      //   overwrite: "auto",
+    });
+  });
+  window.addEventListener("mousemove", (e) => {
+    xTo(e.clientX);
+    yTo(e.clientY);
+  });
+</script>
+<div
+  class="h-screen bg-slate-500 relative flex items-center justify-center bg-[url('/assets/forever-grunge-texture-2x.jpg')] overflow-hidden"
+>
+  <div
+    class="video-container pointer-events-auto relative w-[70vw] overflow-hidden"
+  >
+    <video id="video" class="h-full" poster="/assets/videoposter.png"></video>
+    <div
+      class="yellow-ball h-36 w-36 bg-yellow-600 fixed top-0 left-0 rounded-full flex items-center justify-center"
+    >
+      Play
+    </div>
+  </div>
+</div>

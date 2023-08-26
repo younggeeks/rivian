@@ -1,0 +1,73 @@
+---
+import Layout from "../layouts/Layout.astro";
+import TopNav from "../components/TopNav.astro";
+import MainNav from "../components/MainNav.astro";
+import Hero from "../components/sections/Hero.astro";
+import MillageCompare from "../components/MillageCompare.astro";
+import OurContribution from "../components/OurContribution.astro";
+import NowOpen from "../components/NowOpen.astro";
+import Slider from "../components/sections/Slider.astro";
+import RecentStories from "../components/sections/RecentStories.astro";
+const r1tImages = [
+  "R1T-1_i4armg.webp",
+  "R1T-2_dyzbon.webp",
+  "R1T-3_bssdoz.webp",
+  "R1T-4_jhg43k.webp",
+  "R1T-5_c7fy7l.webp",
+  "R1T-6_saiabk.webp",
+  "R1T-7_squ1ej.webp",
+  "R1T-8_ojomhh.webp",
+  "R1T-9_nuf4dp.webp",
+];
+const r1sImages = [
+  "R1S-1_bgirg5.webp",
+  "R1S-2_pddmx1.webp",
+  "R1S-3_kkggga.webp",
+  "R1S-4_np0twf.webp",
+  "R1S-5_m1tmrz.webp",
+  "R1S-6_mpb0pk.webp",
+  "R1S-7_pg5dbf.webp",
+  "R1S-8_kihnml.webp",
+  "R1S-9_nvxvfn.webp",
+];
+---
+
+<script>
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import gsap from "gsap";
+  gsap.registerPlugin(ScrollTrigger);
+  const menu = document.querySelector(".menu");
+  setTimeout(() => {
+    menu?.classList.add("main-nav--scrolled");
+  }, 100);
+  ScrollTrigger.create({
+    start: "top top",
+    end: 99999,
+    markers: true,
+    toggleClass: { className: "main-nav--scrolled", targets: ".menu" },
+    toggleActions: "play none none reverse",
+    onUpdate: ({ direction }) => {
+      if (direction === -1) {
+        menu?.classList.add("main-nav--scrolled");
+      } else {
+        menu?.classList.remove("main-nav--scrolled");
+      }
+    },
+  });
+</script>
+<Layout title="Welcome to Astro.">
+  <main class="bg-gray-100 h-screen">
+    <header>
+      <section class="fixed w-full menu top-0 -translate-y-40 z-20">
+        <TopNav />
+        <MainNav />
+      </section>
+    </header>
+    <Hero />
+    <MillageCompare r1tImages={r1tImages} r1sImages={r1sImages} />
+    <OurContribution />
+    <NowOpen />
+    <Slider />
+    <RecentStories />
+  </main>
+</Layout>

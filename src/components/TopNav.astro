@@ -1,0 +1,24 @@
+---
+// interface Props {
+// 	title: string;
+// 	body: string;
+// 	href: string;
+// }
+
+// const { href, title, body } = Astro.props;
+---
+<script>
+	let links = document.querySelectorAll(".main-link");
+
+	links.forEach((link)=> {
+		link.addEventListener("mouseleave", ()=> {
+			link.classList.add('animate-out')
+			setTimeout(()=>{
+				link.classList.remove("animate-out")
+			}, 300)
+		});
+	})
+</script>
+<div class="bg-psa px-[40px] py-[19px] text-center  text-[10px]">
+	<p>Want to see what we're up to? <a href="#" class="underline">Get updates from Rivian.</a></p>
+</div>

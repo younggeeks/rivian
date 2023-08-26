@@ -1,0 +1,132 @@
+---
+import ComparisonSlider from "./ComparisonSlider.astro";
+interface Props {
+  r1tImages: string[];
+  r1sImages: string[];
+}
+const { r1tImages, r1sImages } = Astro.props;
+---
+
+<script>
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import gsap from "gsap";
+  gsap.registerPlugin(ScrollTrigger);
+  const leftMillage = document.querySelector(".millage-left");
+  const rightMillage = document.querySelector(".millage-right");
+  let tl = gsap
+    .timeline({
+      defaults: { clearProps: true },
+      onComplete: console.log,
+    })
+    .set(".slider-item--left", { display: "none" });
+  let tl2 = gsap.timeline({ defaults: { clearProps: true } });
+  leftMillage?.addEventListener("mouseenter", () => {
+    animateMillage("left");
+    setTimeout(() => {
+      animateCars("left");
+    }, 800);
+  });
+  rightMillage?.addEventListener("mouseenter", () => {
+    animateMillage("right");
+    setTimeout(() => {
+      animateCars("right");
+    }, 800);
+  });
+  leftMillage?.addEventListener("mouseleave", () => {
+    animateMillage("reset");
+    tl.clear();
+    tl2.clear().kill();
+  });
+
+  rightMillage?.addEventListener("mouseleave", () => {
+    animateMillage("reset");
+    tl.clear().kill();
+    tl2.clear().kill();
+  });
+
+  function animateCars(location: "left" | "right") {
+    if (location === "left") {
+      tl.fromTo(
+        ".slider-item--left",
+        { display: "none" },
+        {
+          display: "block",
+          stagger: 1,
+          repeat: 10000000000,
+          onComplete: () => {
+            console.log("completed ");
+          },
+          onUpdate: (res) => {
+            console.log("updated", res);
+          },
+        }
+      );
+    } else {
+      tl2.fromTo(
+        ".slider-item--right",
+        { display: "none" },
+        {
+          display: "block",
+          stagger: 1,
+          repeat: 10000000000,
+          onComplete: () => {
+            console.log("completed");
+          },
+          onUpdate: () => {
+            console.log("updated");
+          },
+        }
+      );
+    }
+  }
+
+  function animateMillage(item: "left" | "right" | "reset") {
+    gsap.to(".millage-left", {
+      width: percentageMap[item][0],
+      ease: "elastic.out(1,0.75)",
+      duration: 1,
+    });
+    gsap.to(".millage-right", {
+      width: percentageMap[item][1] || "48.5%",
+      ease: "elastic.out(1,0.75)",
+      duration: 1,
+    });
+
+    gsap.to(".millage-buttons--left", {
+      opacity: item === "reset" ? 0 : item === "left" ? 1 : 0,
+      ease: "elastic.out(1,0.75)",
+      duration: 1,
+    });
+    gsap.to(".millage-buttons--right", {
+      opacity: item === "reset" ? 0 : item === "right" ? 1 : 0,
+      ease: "elastic.out(1,0.75)",
+      duration: 1,
+    });
+  }
+
+  const percentageMap = {
+    left: ["54%", "43%"],
+    right: ["43%", "54%"],
+    reset: ["48.5%"],
+  };
+</script>
+
+<div
+  class="2xl:h-[86vh] 2xl:min-h-[86vh] lg:min-h-[98vh] lg:h-[98vh] checked bg-[#f9f2e8] bg-[url('/assets/square-150.png')] bg-fixed"
+>
+  <div class="max-w-screen-lg mx-auto lg:min-w-[1000px]">
+    <div class="grid grid-cols-12 py-28">
+      <div class="col-span-6">
+        <h4 class="text-5xl">Vehicles made for the planet</h4>
+      </div>
+      <div class="col-span-6 text-xl">
+        <p>
+          Whether it's taking families on new adventures or helping fleets
+          electrify at scale, our vehicles all share a common goal - preserving
+          the natural world for generations to come.
+        </p>
+      </div>
+    </div>
+  </div>
+  <ComparisonSlider r1tImages={r1tImages} r1sImages={r1sImages} />
+</div>

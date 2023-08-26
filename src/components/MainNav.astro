@@ -1,0 +1,38 @@
+---
+---
+
+<script>
+  import gsap from "gsap";
+  document.addEventListener("scroll", moveCircle);
+  function moveCircle() {
+    gsap.to("#nowOpen", {
+      duration: 1.7,
+      rotate: window.scrollY / 16,
+      ease: "power4.out",
+    });
+  }
+</script>
+
+<div class="flex justify-between px-[3rem] h-[95px] items-center bg-white">
+  <a href="#">
+    <img src="/assets/header_logo.svg" alt="rivian Logo" class="h-[33px]" />
+  </a>
+
+  <nav class="space-x-16 text-lg font-medium flex items-center">
+    <a href="#" class="main-link">R1T</a>
+    <a href="#" class="main-link">R1S</a>
+    <a href="#" class="main-link">Gear Shop</a>
+    <a href="#" class="main-link">Fleet</a>
+    <a href="#" class="main-link">Spaces</a>
+  </nav>
+
+  <div class="flex items-center">
+    <a href="#" class="main-link">Sign In</a>
+    <button>
+      <svg viewBox="0 0 100 80" width="40" height="20">
+        <rect y="30" width="60" height="10"></rect>
+        <rect y="60" width="60" height="10"></rect>
+      </svg>
+    </button>
+  </div>
+</div>

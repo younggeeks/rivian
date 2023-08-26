@@ -1,0 +1,368 @@
+---
+import slider1 from "../../assets/Dual_mobile.webp";
+---
+
+<script>
+  import gsap from "gsap";
+  import { Draggable } from "gsap/all";
+  gsap.registerPlugin(Draggable);
+
+  var slideDelay = 5;
+  var slideDuration = 0.5;
+
+  var slides = document.querySelectorAll(".slider__slide");
+  var prevButton = document.querySelector("#prevButton");
+  var nextButton = document.querySelector("#nextButton");
+
+  var numSlides = slides.length;
+  var currentSlide = 0; // add variable to keep track of current slide
+
+  for (var i = 0; i < numSlides; i++) {
+    slides[i].setAttribute("id", `${i + 1}/${numSlides}`);
+    gsap.set(slides[i], {
+      xPercent: i * 100,
+    });
+  }
+
+  var timer = gsap.delayedCall(slideDelay, autoPlay);
+
+  var animation = gsap.to(slides, {
+    duration: 1,
+    xPercent: "+=" + numSlides * 100,
+    ease: "none",
+    paused: true,
+    repeat: -1,
+    modifiers: {
+      xPercent: gsap.utils.wrap(-100, (numSlides - 1) * 100),
+    },
+  });
+
+  var proxy = document.createElement("div");
+  gsap.set(proxy, { x: 0 });
+  var slideAnimation = gsap.to(
+    {},
+    {
+      duration: 0.1,
+    }
+  );
+  var slideWidth = 0;
+  var wrapWidth = 0;
+  resize();
+
+  var draggable = new Draggable(proxy, {
+    trigger: ".hero__slider",
+    throwProps: true,
+    onPress: updateDraggable,
+    onDrag: updateProgress,
+    onThrowUpdate: updateProgress,
+    snap: {
+      x: gsap.utils.snap(slideWidth),
+    },
+  });
+
+  window.addEventListener("resize", resize);
+
+  prevButton?.addEventListener("click", function () {
+    animateSlides(1);
+  });
+
+  nextButton?.addEventListener("click", function () {
+    animateSlides(-1);
+  });
+
+  function updateDraggable() {
+    timer.restart(true);
+    slideAnimation.kill();
+    // this.update();
+  }
+
+  function animateSlides(direction: number) {
+    timer.restart(true);
+    slideAnimation.kill();
+
+    var x = snapX(
+      (gsap.getProperty(proxy, "x") as number) + direction * slideWidth
+    );
+
+    slideAnimation = gsap.to(proxy, {
+      duration: slideDuration,
+      x: x,
+      onUpdate: function () {
+        updateProgress();
+      },
+      onComplete: () => {
+        currentSlide = Math.abs(
+          Math.round((gsap.getProperty(proxy, "x") as number) / slideWidth)
+        );
+
+        if (currentSlide > numSlides - 1) {
+          currentSlide = 0;
+          gsap.set(proxy, { x: 0 });
+        } else if (currentSlide < 0) {
+          currentSlide = numSlides - 1;
+        }
+        document.querySelector(".slide__counter")!.innerHTML =
+          currentSlide + 1 + "/" + numSlides;
+      },
+    });
+  }
+
+  function autoPlay() {
+    if (draggable.isPressed || draggable.isDragging || draggable.isThrowing) {
+      timer.restart(true);
+    } else {
+      animateSlides(-1);
+    }
+  }
+
+  function updateProgress() {
+    animation.progress(
+      gsap.utils.wrap(
+        0,
+        1,
+        (gsap.getProperty(proxy, "x") as number) / wrapWidth
+      )
+    );
+  }
+
+  function resize() {
+    var norm = (gsap.getProperty(proxy, "x") as number) / wrapWidth || 0;
+    slideWidth = (slides[0] as any).offsetWidth;
+    wrapWidth = slideWidth * numSlides;
+    gsap.set(proxy, {
+      x: norm * wrapWidth,
+    });
+
+    animateSlides(0);
+    slideAnimation.progress(1);
+  }
+
+  function snapX(x: number) {
+    return Math.round(x / slideWidth) * slideWidth;
+  }
+</script>
+<div class="relative h-screen overflow-hidden">
+  <div class="hero__slider">
+    <div class="slider__slide">
+      <div class="slider__image">
+        <!-- <img
+          src="https://cultivatingthevanguard.com/wp-content/uploads/2021/03/vcexr-gran-saloneresidence-7078-hor-clsc.webp"
+          alt=""
+        /> -->
+        <picture class="image__src"
+          ><source
+            srcset="https://images.rivian.com/2md5qhoeajym/3Kfsz5i3A22SXuuZ3fgln5/f3500034f9d5a1da7d3c113d559b14be/Dual_Desktop.jpg?fm=webP"
+            media="(min-width: 1440px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/3Kfsz5i3A22SXuuZ3fgln5/f3500034f9d5a1da7d3c113d559b14be/Dual_Desktop.jpg?fm=jpg&fl=progressive"
+            media="(min-width: 1440px)"
+            type="image/jpeg"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/3Kfsz5i3A22SXuuZ3fgln5/f3500034f9d5a1da7d3c113d559b14be/Dual_Desktop.jpg?w=1440&fm=webp,  https://images.rivian.com/2md5qhoeajym/3Kfsz5i3A22SXuuZ3fgln5/f3500034f9d5a1da7d3c113d559b14be/Dual_Desktop.jpg?fm=webP 2x"
+            media="(min-width: 1024px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/3Kfsz5i3A22SXuuZ3fgln5/f3500034f9d5a1da7d3c113d559b14be/Dual_Desktop.jpg?w=1440&fm=jpg&fl=progressive,  https://images.rivian.com/2md5qhoeajym/3Kfsz5i3A22SXuuZ3fgln5/f3500034f9d5a1da7d3c113d559b14be/Dual_Desktop.jpg?fm=jpg&fl=progressive 2x"
+            media="(min-width: 1024px)"
+            type="image/jpeg"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/3Kfsz5i3A22SXuuZ3fgln5/f3500034f9d5a1da7d3c113d559b14be/Dual_Desktop.jpg?w=768&fm=webp,  https://images.rivian.com/2md5qhoeajym/3Kfsz5i3A22SXuuZ3fgln5/f3500034f9d5a1da7d3c113d559b14be/Dual_Desktop.jpg?w=1440&fm=webp 2x"
+            media="(min-width: 768px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/3Kfsz5i3A22SXuuZ3fgln5/f3500034f9d5a1da7d3c113d559b14be/Dual_Desktop.jpg?w=768&fm=jpg&fl=progressive,  https://images.rivian.com/2md5qhoeajym/3Kfsz5i3A22SXuuZ3fgln5/f3500034f9d5a1da7d3c113d559b14be/Dual_Desktop.jpg?w=1440&fm=jpg&fl=progressive 2x"
+            media="(min-width: 768px)"
+            type="image/jpeg"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/7KjZlACQypye4JfTPkDz33/4c22ccaac3ba9f26f18f0ed4b939c2e4/Dual_mobile.jpg?w=768&fm=webp"
+            media="(max-width: 768px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/7KjZlACQypye4JfTPkDz33/4c22ccaac3ba9f26f18f0ed4b939c2e4/Dual_mobile.jpg?w=768&fm=jpg&fl=progressive"
+            media="(max-width: 768px)"
+            type="image/jpeg"
+          /><img
+            class="StyledImage--59kbk6 kXdMGI"
+            alt=""
+            srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+            sizes=""
+          /></picture
+        >
+      </div>
+    </div>
+    <div class="slider__slide is__active">
+      <div class="slider__image">
+        <picture class="image__src"
+          ><source
+            srcset="https://images.rivian.com/2md5qhoeajym/5hCNUai3BA91qg4BbTOpek/054ad307f9a211b02fcf4685be04db7c/UGC-Carousel-Nathan_Heleine-desktop.jpg?fm=webP"
+            media="(min-width: 1440px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/5hCNUai3BA91qg4BbTOpek/054ad307f9a211b02fcf4685be04db7c/UGC-Carousel-Nathan_Heleine-desktop.jpg?fm=jpg&fl=progressive"
+            media="(min-width: 1440px)"
+            type="image/jpeg"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/5hCNUai3BA91qg4BbTOpek/054ad307f9a211b02fcf4685be04db7c/UGC-Carousel-Nathan_Heleine-desktop.jpg?w=1440&fm=webp,  https://images.rivian.com/2md5qhoeajym/5hCNUai3BA91qg4BbTOpek/054ad307f9a211b02fcf4685be04db7c/UGC-Carousel-Nathan_Heleine-desktop.jpg?fm=webP 2x"
+            media="(min-width: 1024px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/5hCNUai3BA91qg4BbTOpek/054ad307f9a211b02fcf4685be04db7c/UGC-Carousel-Nathan_Heleine-desktop.jpg?w=1440&fm=jpg&fl=progressive,  https://images.rivian.com/2md5qhoeajym/5hCNUai3BA91qg4BbTOpek/054ad307f9a211b02fcf4685be04db7c/UGC-Carousel-Nathan_Heleine-desktop.jpg?fm=jpg&fl=progressive 2x"
+            media="(min-width: 1024px)"
+            type="image/jpeg"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/5hCNUai3BA91qg4BbTOpek/054ad307f9a211b02fcf4685be04db7c/UGC-Carousel-Nathan_Heleine-desktop.jpg?w=768&fm=webp,  https://images.rivian.com/2md5qhoeajym/5hCNUai3BA91qg4BbTOpek/054ad307f9a211b02fcf4685be04db7c/UGC-Carousel-Nathan_Heleine-desktop.jpg?w=1440&fm=webp 2x"
+            media="(min-width: 768px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/5hCNUai3BA91qg4BbTOpek/054ad307f9a211b02fcf4685be04db7c/UGC-Carousel-Nathan_Heleine-desktop.jpg?w=768&fm=jpg&fl=progressive,  https://images.rivian.com/2md5qhoeajym/5hCNUai3BA91qg4BbTOpek/054ad307f9a211b02fcf4685be04db7c/UGC-Carousel-Nathan_Heleine-desktop.jpg?w=1440&fm=jpg&fl=progressive 2x"
+            media="(min-width: 768px)"
+            type="image/jpeg"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/3QdotD8z7r5fdRebVD0Si4/d6928e92ddf72dc1685e259bd61cfac5/UGC-Carousel-Nathan_Heleine-mobile.jpg?w=768&fm=webp"
+            media="(max-width: 768px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/3QdotD8z7r5fdRebVD0Si4/d6928e92ddf72dc1685e259bd61cfac5/UGC-Carousel-Nathan_Heleine-mobile.jpg?w=768&fm=jpg&fl=progressive"
+            media="(max-width: 768px)"
+            type="image/jpeg"
+          /><img
+            class="StyledImage--59kbk6 kXdMGI"
+            alt=""
+            srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+            sizes=""
+          /></picture
+        >
+      </div>
+    </div>
+    <div class="slider__slide">
+      <div class="slider__image">
+        <picture class="image__src"
+          ><source
+            srcset="https://images.rivian.com/2md5qhoeajym/SiYuwoaiJEZdUwko5O9Hp/6fb300153da7ce8cf19b128be90f5130/UGC_Carousel-Leslie_Hittmeier-desktop.jpg?fm=webP"
+            media="(min-width: 1440px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/SiYuwoaiJEZdUwko5O9Hp/6fb300153da7ce8cf19b128be90f5130/UGC_Carousel-Leslie_Hittmeier-desktop.jpg?fm=jpg&fl=progressive"
+            media="(min-width: 1440px)"
+            type="image/jpeg"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/SiYuwoaiJEZdUwko5O9Hp/6fb300153da7ce8cf19b128be90f5130/UGC_Carousel-Leslie_Hittmeier-desktop.jpg?w=1440&fm=webp,  https://images.rivian.com/2md5qhoeajym/SiYuwoaiJEZdUwko5O9Hp/6fb300153da7ce8cf19b128be90f5130/UGC_Carousel-Leslie_Hittmeier-desktop.jpg?fm=webP 2x"
+            media="(min-width: 1024px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/SiYuwoaiJEZdUwko5O9Hp/6fb300153da7ce8cf19b128be90f5130/UGC_Carousel-Leslie_Hittmeier-desktop.jpg?w=1440&fm=jpg&fl=progressive,  https://images.rivian.com/2md5qhoeajym/SiYuwoaiJEZdUwko5O9Hp/6fb300153da7ce8cf19b128be90f5130/UGC_Carousel-Leslie_Hittmeier-desktop.jpg?fm=jpg&fl=progressive 2x"
+            media="(min-width: 1024px)"
+            type="image/jpeg"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/SiYuwoaiJEZdUwko5O9Hp/6fb300153da7ce8cf19b128be90f5130/UGC_Carousel-Leslie_Hittmeier-desktop.jpg?w=768&fm=webp,  https://images.rivian.com/2md5qhoeajym/SiYuwoaiJEZdUwko5O9Hp/6fb300153da7ce8cf19b128be90f5130/UGC_Carousel-Leslie_Hittmeier-desktop.jpg?w=1440&fm=webp 2x"
+            media="(min-width: 768px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/SiYuwoaiJEZdUwko5O9Hp/6fb300153da7ce8cf19b128be90f5130/UGC_Carousel-Leslie_Hittmeier-desktop.jpg?w=768&fm=jpg&fl=progressive,  https://images.rivian.com/2md5qhoeajym/SiYuwoaiJEZdUwko5O9Hp/6fb300153da7ce8cf19b128be90f5130/UGC_Carousel-Leslie_Hittmeier-desktop.jpg?w=1440&fm=jpg&fl=progressive 2x"
+            media="(min-width: 768px)"
+            type="image/jpeg"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/5WTUgtdmVojp0I7KVavVbd/0bd6e12e96e108efb2ac0b5a66779e4c/UGC_Carousel-Leslie_Hittmeier-mobile.jpg?w=768&fm=webp"
+            media="(max-width: 768px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/5WTUgtdmVojp0I7KVavVbd/0bd6e12e96e108efb2ac0b5a66779e4c/UGC_Carousel-Leslie_Hittmeier-mobile.jpg?w=768&fm=jpg&fl=progressive"
+            media="(max-width: 768px)"
+            type="image/jpeg"
+          /><img
+            class="StyledImage--59kbk6 kXdMGI"
+            alt=""
+            srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+            sizes=""
+          /></picture
+        >
+      </div>
+    </div>
+    <div class="slider__slide">
+      <div class="slider__image">
+        <picture class="image__src"
+          ><source
+            srcset="https://images.rivian.com/2md5qhoeajym/5fJZBPRfo6VvU1QHjju3gM/5cb0de972294668a42764fc23cd686bb/UGC_Carousel-Gardner_Nichols-desktop.jpg?fm=webP"
+            media="(min-width: 1440px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/5fJZBPRfo6VvU1QHjju3gM/5cb0de972294668a42764fc23cd686bb/UGC_Carousel-Gardner_Nichols-desktop.jpg?fm=jpg&fl=progressive"
+            media="(min-width: 1440px)"
+            type="image/jpeg"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/5fJZBPRfo6VvU1QHjju3gM/5cb0de972294668a42764fc23cd686bb/UGC_Carousel-Gardner_Nichols-desktop.jpg?w=1440&fm=webp,  https://images.rivian.com/2md5qhoeajym/5fJZBPRfo6VvU1QHjju3gM/5cb0de972294668a42764fc23cd686bb/UGC_Carousel-Gardner_Nichols-desktop.jpg?fm=webP 2x"
+            media="(min-width: 1024px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/5fJZBPRfo6VvU1QHjju3gM/5cb0de972294668a42764fc23cd686bb/UGC_Carousel-Gardner_Nichols-desktop.jpg?w=1440&fm=jpg&fl=progressive,  https://images.rivian.com/2md5qhoeajym/5fJZBPRfo6VvU1QHjju3gM/5cb0de972294668a42764fc23cd686bb/UGC_Carousel-Gardner_Nichols-desktop.jpg?fm=jpg&fl=progressive 2x"
+            media="(min-width: 1024px)"
+            type="image/jpeg"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/5fJZBPRfo6VvU1QHjju3gM/5cb0de972294668a42764fc23cd686bb/UGC_Carousel-Gardner_Nichols-desktop.jpg?w=768&fm=webp,  https://images.rivian.com/2md5qhoeajym/5fJZBPRfo6VvU1QHjju3gM/5cb0de972294668a42764fc23cd686bb/UGC_Carousel-Gardner_Nichols-desktop.jpg?w=1440&fm=webp 2x"
+            media="(min-width: 768px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/5fJZBPRfo6VvU1QHjju3gM/5cb0de972294668a42764fc23cd686bb/UGC_Carousel-Gardner_Nichols-desktop.jpg?w=768&fm=jpg&fl=progressive,  https://images.rivian.com/2md5qhoeajym/5fJZBPRfo6VvU1QHjju3gM/5cb0de972294668a42764fc23cd686bb/UGC_Carousel-Gardner_Nichols-desktop.jpg?w=1440&fm=jpg&fl=progressive 2x"
+            media="(min-width: 768px)"
+            type="image/jpeg"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/1qayQLazgxgTB5ITo0KHvt/503a3aeaaadf8f9bd4afaf63b837d98f/UGC_Carousel-Gardner_Nichols-mobile.jpg?w=768&fm=webp"
+            media="(max-width: 768px)"
+            type="image/webp"
+          /><source
+            srcset="https://images.rivian.com/2md5qhoeajym/1qayQLazgxgTB5ITo0KHvt/503a3aeaaadf8f9bd4afaf63b837d98f/UGC_Carousel-Gardner_Nichols-mobile.jpg?w=768&fm=jpg&fl=progressive"
+            media="(max-width: 768px)"
+            type="image/jpeg"
+          /><img
+            class="StyledImage--59kbk6 kXdMGI"
+            alt=""
+            srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+            sizes=""
+          /></picture
+        >
+      </div>
+    </div>
+  </div>
+  <div class="absolute bottom-5 left-5 right-5 flex justify-between">
+    <div class="bg-black text-white flex items-center p-3">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, nulla?
+    </div>
+    <div
+      class="buttons p-2 bg-black flex items-center justify-between w-[120px]"
+    >
+      <button id="prevButton"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6 text-white text-3xl"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75"></path>
+        </svg>
+      </button>
+      <div class="text-white slide__counter"></div>
+      <button id="nextButton"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6 text-white"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div></div>
+</div>

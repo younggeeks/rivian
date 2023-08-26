@@ -1,0 +1,124 @@
+---
+import StoryLink from "../StoryLink.astro";
+
+const stories = [
+  {
+    date: "8.4.23",
+    title:
+      " Irvine,CA - Rivian Meets Q2 Targets and Increases 2023 Production Goal",
+    image: "/assets/story3.jpeg",
+  },
+  {
+    date: "8.4.23",
+    title: "Vancouver, BC - Rivian Opens First Space In Canada",
+    image: "/assets/story1.webp",
+  },
+  {
+    date: "8.4.23",
+    title:
+      " Starfire Mine, KY - Rivian announces Solar Project on former Coal Mine",
+    image: "/assets/story2.jpeg",
+  },
+];
+---
+
+<script>
+  import gsap from "gsap";
+  const buttons = document.querySelectorAll(".link-btn");
+  let selected = "#story1_image";
+  gsap.set(selected, { autoAlpha: 1 });
+
+  const handleHover = (e: any) => {
+    const currentId = e.target.id;
+    const ids = ["#story1", "#story2", "#story3"].filter(
+      (id) => `#${currentId}` !== id
+    );
+
+    // animate images
+    const imageIds = ids.map((id) => `${id}_image`);
+    gsap.to(`#${currentId}_image`, { autoAlpha: 1, duration: 0.5 });
+    gsap.to(imageIds, { autoAlpha: 0, duration: 0.5 });
+
+    // animate buttons
+    gsap.to(ids, { autoAlpha: 0.5, duration: 0.5 });
+    gsap.to(`#${currentId}`, { autoAlpha: 1, duration: 0.5 });
+  };
+
+  buttons.forEach((story) => {
+    story?.addEventListener("mouseenter", handleHover);
+  });
+
+  buttons?.forEach((button) => {
+    button?.addEventListener("mouseleave", () => {
+      gsap.to(" #story2_image, #story3_image", { autoAlpha: 0, duration: 0.5 });
+      gsap.to(" #story1_image", { autoAlpha: 1, duration: 0.5 });
+      gsap.to("#story1, #story2, #story3", { autoAlpha: 1, duration: 0.5 });
+    });
+  });
+</script>
+<div class="grid grid-cols-2 xl:max-w-7xl mx-auto items-start relative">
+  <div class="mt-20">
+    <h3 class="text-5xl font-light mb-12">Recent Stories</h3>
+    {
+      stories.map((story, index) => {
+        return (
+          <StoryLink
+            date={story.date}
+            title={story.title}
+            id={`story${index + 1}`}
+          />
+        );
+      })
+    }
+
+    <button class="px-10 bg-black text-white py-4 mb-20"> View All</button>
+  </div>
+  <div class="relative h-full">
+    <img
+      alt=""
+      src="/assets/story1.webp"
+      id="story1_image"
+      class="opacity-0 absolute top-0 h-full"
+    />
+    <img
+      alt=""
+      src="/assets/story2.jpeg"
+      id="story2_image"
+      class="opacity-0 absolute top-0 h-full"
+    />
+    <img
+      src="/assets/story3.jpeg"
+      alt=""
+      id="story3_image"
+      class="absolute top-0 opacity-0 h-full"
+    />
+  </div>
+</div>
+<div class="h-[220px] bg-black flex items-center">
+  <div class="w-1/2 items-center px-[50px] grid grid-cols-2 gap-10">
+    <h4 class="text-white text-2xl max-w-sm">
+      Subscribe to learn about our latest new, updates ad adventures.
+    </h4>
+
+    <div class="w-full relative">
+      <input
+        type="text"
+        placeholder="Enter your email. *"
+        class="bg-transparent border-b border-x-white focus:outline-none [&:not(:focus-visible)]:outline-none text-white w-full py-2 placeholder:white hover:outline-2 transition-all"
+      />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-6 h-6 text-gray-400 absolute right-0 top-1/2 transform -translate-y-1/2"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
+      </svg>
+    </div>
+  </div>
+</div>
