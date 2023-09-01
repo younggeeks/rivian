@@ -1,0 +1,182 @@
+---
+---
+
+<script>
+  // disable scroll when menu is open
+  function disableScroll() {
+    document.body.style.overflow = "hidden";
+  }
+  disableScroll();
+
+  import gsap from "gsap";
+  const buttons = document.querySelectorAll(".main-menu-link");
+  let selected = "#navigation-r1t_image";
+  const minusIcon = document.querySelector("#minus_icon");
+  const plusIcon = document.querySelector("#plus_icon");
+
+  const submenu = document.querySelector("#submenu");
+
+  gsap.set(submenu, { left: "10%", zIndex: -10 });
+  gsap.set(selected, { autoAlpha: 1 });
+  gsap.set(minusIcon, { autoAlpha: 0 });
+
+  const handleHover = (e: any) => {
+    const currentId = e.target.id;
+
+    if (currentId === "navigation-experience") {
+      gsap.to(minusIcon, { autoAlpha: 1, duration: 0 });
+      gsap.to(plusIcon, { autoAlpha: 0, duration: 0 });
+      gsap.to(submenu, { duration: 0.5, left: "104%", zIndex: 40 });
+    }
+
+    const ids = Array.from(buttons)
+      .map((button) => {
+        return `${button.id}`;
+      })
+      .filter((id) => `${currentId}` !== id)
+      .filter((id) => id !== "");
+
+    const imageIds = ids
+      .map((id) => `${id}_image`)
+      .filter((id) => id !== `${currentId}_image`);
+    gsap.to(`#${currentId}_image`, {
+      autoAlpha: 1,
+      duration: 0.5,
+    });
+    gsap.to(imageIds, { autoAlpha: 0, duration: 0 });
+  };
+
+  buttons.forEach((story) => {
+    story?.addEventListener("mouseenter", handleHover);
+  });
+
+  buttons?.forEach((button) => {
+    button?.addEventListener("mouseleave", (e: any) => {
+      const images = document.querySelectorAll(".images img");
+      const currentId = e.target.id;
+      if (currentId === "navigation-experience") {
+        gsap.to(minusIcon, { autoAlpha: 0, duration: 0 });
+        gsap.to(plusIcon, { autoAlpha: 1, duration: 0 });
+        gsap.to(submenu, { duration: 0.5, left: "0%", zIndex: -10 });
+      }
+      const imageIds = Array.from(images)
+        .map((image) => {
+          return `#${image.id}`;
+        })
+        .filter((id) => id !== "");
+
+      gsap.to(imageIds, {
+        autoAlpha: 0,
+        duration: 0.5,
+      });
+
+      gsap.to(selected, {
+        autoAlpha: 1,
+        duration: 0.5,
+      });
+    });
+  });
+</script>
+
+<div class="absolute h-screen inset-0 z-30">
+  <div class="grid grid-cols-12 md:grid-cols-12 gap-4 ml-10 h-full relative">
+    <div class="flex col-span-3 z-10 justify-center ml-20 relative">
+      <div class="w-full self-center">
+        <div class="flex flex-col justify-center space-y-6 pb-4 text-left">
+          <a href="#" id="navigation-r1t" class="main-menu-link">
+            <span class="main-menu-item relative"> R1T</span>
+          </a>
+          <a href="#" id="navigation-r1s" class="main-menu-link">
+            <span class="main-menu-item relative">R1S</span>
+          </a>
+          <a href="#" id="navigation-gear-shop" class="main-menu-link">
+            <span class="main-menu-item relative">Gear Shop</span>
+          </a>
+          <a href="#" id="navigation-fleet" class="main-menu-link">
+            <span class="main-menu-item relative">Fleet</span>
+          </a>
+          <a href="#" id="navigation-spaces" class="main-menu-link">
+            <span class="main-menu-item relative">Spaces</span>
+          </a>
+          <a
+            href="#"
+            id="navigation-experience"
+            class="main-menu-link flex justify-between items-center"
+          >
+            <span class="main-menu-item relative">Experience</span>
+            <div class="relative">
+              <img
+                src="/assets/images/nav/plus_icon.svg"
+                id="plus_icon"
+                alt="plus icon"
+                class="absolute right-0"
+              />
+              <img
+                src="/assets/images/nav/minus_icon.svg"
+                id="minus_icon"
+                alt="minus icon"
+              />
+            </div>
+          </a>
+          <a href="#" class="main-menu-link">
+            <span class="main-menu-item relative">Our Company</span>
+          </a>
+          <a href="#" class="main-menu-link">
+            <span class="main-menu-item relative">Stories</span>
+          </a>
+        </div>
+        <hr class="my-5 opacity-50" />
+        <div class="flex flex-col text-start space-y-20">
+          <button class="text-[#cbcbcb] text-left text-2xl hover:text-white">
+            <span class="main-menu-item relative"> Support</span>
+          </button>
+
+          <button class="text-[#cbcbcb] text-left text-2xl hover:text-white">
+            <span class="main-menu-item relative"> Sign In</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="submenu"
+      class="absolute bg-black w-[300px] -right-0 left-[104%] h-full"
+    >
+      samaki
+    </div>
+    <div class="flex flex-col col-span-9">
+      <div class="flex flex-col justify-center relative images h-full">
+        <img
+          src="/assets/images/nav/navigation-r1t.jpg"
+          alt="placeholder"
+          class="opacity-0 absolute left-0"
+          id="navigation-r1t_image"
+        />
+        <img
+          src="/assets/images/nav/navigation-r1s.jpg"
+          alt="placeholder"
+          class="opacity-0 absolute left-0"
+          id="navigation-r1s_image"
+        />
+        <img
+          src="/assets/images/nav/navigation-fleet.jpg"
+          alt="placeholder"
+          class="opacity-0 absolute left-0"
+          id="navigation-fleet_image"
+        />
+        <img
+          src="/assets/images/nav/navigation-gear-shop.jpg"
+          alt="placeholder"
+          class="opacity-0 absolute left-0"
+          id="navigation-gear-shop_image"
+        />
+        <img
+          src="/assets/images/nav/spaces_header-desktop.jpeg"
+          alt="placeholder"
+          class="opacity-0 absolute left-0"
+          id="navigation-spaces_image"
+        />
+      </div>
+    </div>
+  </div>
+</div>

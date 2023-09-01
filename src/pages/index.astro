@@ -7,6 +7,8 @@ import MillageCompare from "../components/MillageCompare.astro";
 import OurContribution from "../components/OurContribution.astro";
 import NowOpen from "../components/NowOpen.astro";
 import Slider from "../components/sections/Slider.astro";
+import Footer from "../components/sections/Footer.astro";
+import FullScreenMenu from "../components/FullScreenMenu.astro";
 import RecentStories from "../components/sections/RecentStories.astro";
 const r1tImages = [
   "R1T-1_i4armg.webp",
@@ -33,20 +35,35 @@ const r1sImages = [
 ---
 
 <script>
+  function heroVisible() {
+    let hero = document.querySelector(".hero");
+    let heroRect = (hero as any).getBoundingClientRect();
+    let heroTop = heroRect.top;
+    let heroBottom = heroRect.bottom;
+    return heroTop < window.innerHeight && heroBottom >= 0;
+  }
+
   import { ScrollTrigger } from "gsap/ScrollTrigger";
   import gsap from "gsap";
   gsap.registerPlugin(ScrollTrigger);
   const menu = document.querySelector(".menu");
+  let nav = document.querySelector(".nav-white");
+
   setTimeout(() => {
     menu?.classList.add("main-nav--scrolled");
   }, 100);
   ScrollTrigger.create({
     start: "top top",
-    end: 99999,
-    markers: true,
     toggleClass: { className: "main-nav--scrolled", targets: ".menu" },
     toggleActions: "play none none reverse",
     onUpdate: ({ direction }) => {
+      if (heroVisible()) {
+        nav?.classList.add("transparent-nav");
+        nav?.classList.remove("default-nav");
+      } else {
+        nav?.classList.remove("transparent-nav");
+        nav?.classList.add("default-nav");
+      }
       if (direction === -1) {
         menu?.classList.add("main-nav--scrolled");
       } else {
@@ -56,6 +73,7 @@ const r1sImages = [
   });
 </script>
 <Layout title="Welcome to Astro.">
+  <!-- <FullScreenMenu /> -->
   <main class="bg-gray-100 h-screen">
     <header>
       <section class="fixed w-full menu top-0 -translate-y-40 z-20">
@@ -69,5 +87,6 @@ const r1sImages = [
     <NowOpen />
     <Slider />
     <RecentStories />
+    <Footer />
   </main>
 </Layout>

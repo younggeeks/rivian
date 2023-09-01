@@ -13,15 +13,13 @@ const { r1tImages, r1sImages } = Astro.props;
     <div class="relative h-[450px]">
       <div class="slider-container">
         {
-          r1tImages
-            ?.reverse()
-            .map((image) => (
-              <img
-                src={`/assets/r1t/${image}`}
-                alt="R1T"
-                class="object-center  object-scale-down absolute-centered h-[440px] slider-item--left"
-              />
-            ))
+          r1tImages?.map((image) => (
+            <img
+              src={`/assets/r1t/${image}`}
+              alt="R1T"
+              class="object-center hidden  object-scale-down absolute-centered h-[440px] slider-item--left"
+            />
+          ))
         }
       </div>
 
@@ -44,15 +42,13 @@ const { r1tImages, r1sImages } = Astro.props;
     <div class="relative h-[450px]">
       <div class="slider-container">
         {
-          r1sImages
-            ?.reverse()
-            .map((image) => (
-              <img
-                src={`/assets/r1s/${image}`}
-                alt="R1T"
-                class="object-center  object-scale-down absolute-centered h-[440px] slider-item--right"
-              />
-            ))
+          r1sImages.map((image) => (
+            <img
+              src={`/assets/r1s/${image}`}
+              alt="R1T"
+              class="object-center  object-scale-down hidden absolute-centered h-[440px] slider-item--right"
+            />
+          ))
         }
       </div>
 

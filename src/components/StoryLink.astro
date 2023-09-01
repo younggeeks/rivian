@@ -8,6 +8,33 @@ interface Props {
 const { title, date, id } = Astro.props as Props;
 ---
 
+<script>
+  import gsap from "gsap";
+  //on hover select the svg and reset right position
+  const btns = document.querySelectorAll(".link-btn");
+
+  let tl = gsap.timeline();
+
+  btns.forEach((btn) => {
+    btn?.addEventListener("mouseenter", () => {
+      console.log("enter");
+      const svg = btn.querySelector("svg");
+      if (svg) {
+        tl.to(svg, { right: -7, opacity: 1, display: "block", duration: 0.5 });
+      }
+    });
+  });
+  //reverse the animation on mouseleave
+  btns.forEach((btn) => {
+    btn?.addEventListener("mouseleave", () => {
+      console.log("leave");
+      const svg = btn.querySelector("svg");
+      if (svg) {
+        tl.to(svg, { right: 40, opacity: 0, display: "none", duration: 0.3 });
+      }
+    });
+  });
+</script>
 <div role="button" id={id} class={`mb-10 link-btn `}>
   <h1 class="text-gray-700">{date}</h1>
   <p class="text-[20px] max-w-md relative">

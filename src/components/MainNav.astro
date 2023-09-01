@@ -4,6 +4,48 @@
 <script>
   import gsap from "gsap";
   document.addEventListener("scroll", moveCircle);
+  const menuButton = document.querySelector(".menu-button");
+
+  const upperLineFull = document.querySelector(".upper-line-full");
+  const bottomLineFull = document.querySelector(".bottom-line-full");
+
+  let open = false;
+  menuButton?.addEventListener("click", () => {
+    if (!open) {
+      gsap.to(upperLineFull, {
+        duration: 0.5,
+        rotate: 45,
+        y: 6,
+        ease: "power4.out",
+        paused: false,
+      });
+      gsap.to(bottomLineFull, {
+        duration: 0.5,
+        rotate: -45,
+        y: -4,
+        ease: "power4.out",
+        paused: false,
+      });
+      open = true;
+    } else {
+      gsap.to(upperLineFull, {
+        duration: 0.5,
+        rotate: 0,
+        y: 0,
+        ease: "power4.out",
+        paused: false,
+      });
+      gsap.to(bottomLineFull, {
+        duration: 0.5,
+        rotate: 0,
+        y: 0,
+        ease: "power4.out",
+        paused: false,
+      });
+      open = false;
+    }
+  });
+
   function moveCircle() {
     gsap.to("#nowOpen", {
       duration: 1.7,
@@ -13,9 +55,20 @@
   }
 </script>
 
-<div class="flex justify-between px-[3rem] h-[95px] items-center bg-white">
+<div
+  class="flex justify-between px-[3rem] h-[95px] nav-white default-nav items-center"
+>
   <a href="#">
-    <img src="/assets/header_logo.svg" alt="rivian Logo" class="h-[33px]" />
+    <img
+      src="/assets/header_logo.svg"
+      alt="rivian Logo"
+      class="h-[33px] logo-dark"
+    />
+    <img
+      src="/assets/rivian-logo_light.svg"
+      alt="rivian Logo light"
+      class="h-[33px] hidden logo-light"
+    />
   </a>
 
   <nav class="space-x-16 text-lg font-medium flex items-center">
@@ -27,12 +80,10 @@
   </nav>
 
   <div class="flex items-center">
-    <a href="#" class="main-link">Sign In</a>
-    <button>
-      <svg viewBox="0 0 100 80" width="40" height="20">
-        <rect y="30" width="60" height="10"></rect>
-        <rect y="60" width="60" height="10"></rect>
-      </svg>
+    <a href="#" class="main-link mr-8 text-lg font-medium">Sign In</a>
+    <button class="space-y-2 menu-button">
+      <div class="upper-line-full h-[2px] w-4 bg-black"></div>
+      <div class="bottom-line-full h-[2px] w-4 bg-black"></div>
     </button>
   </div>
 </div>
