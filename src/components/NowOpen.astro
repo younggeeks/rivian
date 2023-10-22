@@ -1,34 +1,30 @@
 ---
 import NowOpenRotate from "./NowOpenRotate.astro";
-import OfficeCard from "./OfficeCard.astro";
+import OfficeCard from "./Office.astro";
 ---
 
 <div
-  class="grid grid-rows-2 grid-flow-col gap-20 max-w-[1185px] mx-auto h-[900px] m-32"
+  class="grid md:grid-rows-2 md:grid-cols-2 gap-8 max-w-sm md:max-w-screen-lg mx-auto lg:min-w-[1000px] py-40"
 >
-  <div class="row-span-3 relative">
-    <NowOpenRotate className="absolute -top-[100px] right-2 z-10" />
+  <div class="col-span-1 md:row-span-2">
     <OfficeCard
       imagePath="/assets/Seattle_Routing_1_lbnen7.jpeg"
       category="Spaces"
       copy="Building places to gather"
-      className="w-auto h-full"
     />
   </div>
-  <div class="col-span-1">
+  <div class="">
     <OfficeCard
       imagePath="/assets/IMG_0795_lgix1t.jpeg"
-      category="Newsroom"
-      copy="Rivian announces solar project on former coal mine"
-      className="max-h-[340px] "
+      category="Spaces"
+      copy="Building places to gather"
     />
   </div>
-  <div class="row-span-1">
+  <div>
     <OfficeCard
       imagePath="/assets/Homepage-ICOF_gqydce.jpeg"
-      category="Gear Shop"
-      copy="Goods for you and your vehicle."
-      className="max-h-[340px]"
+      category="Spaces"
+      copy="Building places to gather"
     />
   </div>
 </div>

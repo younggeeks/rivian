@@ -9,19 +9,21 @@ interface Props {
 const { imagePath, category, copy, className } = Astro.props as Props;
 ---
 
-<a href="#" class="group inline-block overflow-hidden">
+<div class="flex flex-col items-start group">
   <img
     src={imagePath}
-    alt="Vancouver"
-    class={` rounded-3xl transition-transform duration-700 ${className} `}
+    alt={category}
+    class="w-full aspect-[1/1] md:aspect-[1/1] max-h-[240px] md:max-h-none object-cover rounded-lg shadow-lg"
   />
-  <div class="relative flex flex-col justify-between mt-4 sm:flex-row sm:items-center">
+  <div
+    class="relative flex md:flex-col justify-between mt-4 sm:flex-row sm:items-center w-full"
+  >
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
       <h4 class="text-2xl">{category}</h4>
       <span class="text-sm">{copy}</span>
     </div>
     <button
-      class="-translate-x-5 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-500"
+      class="md:-translate-x-5 md:opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-500"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -38,4 +40,4 @@ const { imagePath, category, copy, className } = Astro.props as Props;
       </svg>
     </button>
   </div>
-</a>
+</div>
