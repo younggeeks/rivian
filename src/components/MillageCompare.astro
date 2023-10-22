@@ -16,6 +16,8 @@ const { r1tImages, r1sImages } = Astro.props;
   let leftImages = document.querySelectorAll(".slider-item--left");
   let rightImages = document.querySelectorAll(".slider-item--right");
 
+  let leftTimer: number | undefined;
+  let rightTimer;
   (leftImages[0] as any).style.display = "block";
   (rightImages[0] as any).style.display = "block";
 
@@ -26,17 +28,18 @@ const { r1tImages, r1sImages } = Astro.props;
   let tl2 = gsap.timeline({ defaults: { clearProps: true } });
   leftMillage?.addEventListener("mouseenter", () => {
     animateMillage("left");
-    setTimeout(() => {
+    leftTimer = setTimeout(() => {
       animateCars("left");
     }, 800);
   });
   rightMillage?.addEventListener("mouseenter", () => {
     animateMillage("right");
-    setTimeout(() => {
+    rightTimer = setTimeout(() => {
       animateCars("right");
     }, 800);
   });
   leftMillage?.addEventListener("mouseleave", () => {
+    clearTimeout(leftTimer);
     animateMillage("reset");
     tl.clear().revert();
     tl2.clear().revert();

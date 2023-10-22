@@ -181,16 +181,16 @@ a.main-link:hover:after {
 
 @layer components{
   .btn-outline--default{
-    @apply px-10 py-4 font-medium border-white border-2 box-border text-white hover:bg-[rgba(34,34,34,0.05)]  transition-colors
+    @apply px-10 py-4 font-medium rounded-full  border-white border-2 box-border text-white hover:bg-[rgba(34,34,34,0.05)]  transition-colors
   }
   .btn-filled--default{
-    @apply px-10 py-4 font-medium bg-white hover:bg-[rgba(255,255,255,0.95)] transition-colors
+    @apply px-10 py-4 font-medium rounded-full  bg-white hover:bg-[rgba(255,255,255,0.95)] transition-colors
   }
   .btn-outline--inverted{
-    @apply px-6 py-2 font-light border-black border box-border text-black hover:bg-[rgba(255,255,255,0.9)] transition-colors
+    @apply px-6 py-2 font-light rounded-full  border-black border box-border text-black hover:bg-[rgba(255,255,255,0.9)] transition-colors
   }
   .btn-filled--inverted{
-    @apply px-6 py-2 font-light bg-black text-white hover:bg-[rgba(0,0,0,0.7)] transition-colors
+    @apply px-6 py-2 font-light rounded-full  bg-black text-white hover:bg-[rgba(0,0,0,0.7)] transition-colors
   }
 
   .footer-link{
