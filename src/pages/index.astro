@@ -10,6 +10,7 @@ import Slider from "../components/sections/Slider.astro";
 import Footer from "../components/sections/Footer.astro";
 import FullScreenMenu from "../components/FullScreenMenu.astro";
 import RecentStories from "../components/sections/RecentStories.astro";
+import ImageSlider from "../components/sections/ImageSlider.astro";
 const r1tImages = [
   "R1T-1_i4armg.webp",
   "R1T-2_dyzbon.webp",
@@ -72,7 +73,7 @@ const r1sImages = [
     },
   });
 </script>
-<Layout title="Welcome to Astro.">
+<Layout title="Rivian Clone">
   <!-- <FullScreenMenu /> -->
   <main class="bg-gray-100 h-screen">
     <header>
@@ -85,7 +86,7 @@ const r1sImages = [
     <MillageCompare r1tImages={r1tImages} r1sImages={r1sImages} />
     <OurContribution />
     <NowOpen />
-    <Slider />
+    <ImageSlider />
     <RecentStories />
     <Footer />
   </main>

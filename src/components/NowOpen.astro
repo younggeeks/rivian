@@ -6,7 +6,7 @@ import OfficeCard from "./Office.astro";
 <div
   class="grid md:grid-rows-2 md:grid-cols-2 gap-8 md:gap-20 max-w-sm md:max-w-screen-lg mx-auto lg:min-w-[1000px] py-40"
 >
-  <div class="col-span-1 md:row-span-2">
+  <div class="col-span-1 md:row-span-2 md:col-span-2">
     <OfficeCard
       imagePath="/assets/Seattle_Routing_1_lbnen7.jpeg"
       category="Spaces"
@@ -14,14 +14,14 @@ import OfficeCard from "./Office.astro";
       ribbon
     />
   </div>
-  <div class="">
+  <div class="md:col-span-2">
     <OfficeCard
       imagePath="/assets/IMG_0795_lgix1t.jpeg"
       category="Newsroom"
       copy="Rivian announces solar project on former coal mine."
     />
   </div>
-  <div>
+  <div class="md:col-span-2">
     <OfficeCard
       imagePath="/assets/Homepage-ICOF_gqydce.jpeg"
       category="Gear Shop"

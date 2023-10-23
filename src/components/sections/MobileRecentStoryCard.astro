@@ -1,0 +1,19 @@
+---
+import { Image } from "astro:assets";
+interface Props {
+  photo: ImageMetadata;
+  title: string;
+  link: string;
+  date: string;
+}
+
+const { photo, title, link, date } = Astro.props;
+---
+
+<div class="mb-6">
+  <Image src={photo} alt={title} class="rounded-xl w-full object-cover" />
+  <h3 class="text-xl mt-2">
+    <a href={link}>{title}</a>
+  </h3>
+  <p>{date}</p>
+</div>

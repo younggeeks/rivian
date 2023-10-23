@@ -1,12 +1,16 @@
 ---
-interface Props{
-    text: string
-    variant: "btn-filled--default" | "btn-outline--default" | "btn-filled--inverted" | "btn-outline--inverted"
+interface Props {
+  text: string;
+  variant:
+    | "btn-filled--default"
+    | "btn-outline--default"
+    | "btn-filled--inverted"
+    | "btn-outline--inverted";
 }
 
-const {text, variant} = Astro.props;
+const { text, variant } = Astro.props;
 ---
 
-<button class={variant}>
-    {text}
+<button class={`${variant} font-light`}>
+  {text}
 </button>

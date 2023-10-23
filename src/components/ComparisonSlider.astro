@@ -1,6 +1,5 @@
 ---
 import Button from "./Button.astro";
-
 interface Props {
   r1tImages: string[];
   r1sImages: string[];
@@ -8,58 +7,68 @@ interface Props {
 const { r1tImages, r1sImages } = Astro.props;
 ---
 
-<div class="px-[2rem] relative cursor-pointer">
-  <div class="col-span-6 bg-psa w-[48.5%] millage-left left-5 absolute">
-    <div class="relative h-[450px]">
+<div class="md:px-[2rem] px-2 relative h-full cursor-pointer">
+  <div
+    class="col-span-6 bg-psa md:w-[46.5%] lg:w-[48.5%] h-[450px] md:h-[350px] lg:h-[450px] millage-left md:millage-desktop md:left-5 md:absolute mb-6 md:mb-0"
+  >
+    <div class="relative h-[450px] lg:h-[450px] md:h-[350px]">
       <div class="slider-container">
         {
           r1tImages?.map((image) => (
             <img
               src={`/assets/r1t/${image}`}
               alt="R1T"
-              class="object-center hidden  object-scale-down absolute-centered h-[440px] slider-item--left"
+              class="object-center  object-scale-down hidden absolute-centered  h-[440px] md:h-[350px] lg:h-[450px] slider-item--left"
             />
           ))
         }
       </div>
 
       <div>
-        <div class="flex space-x-4 items-center absolute bottom-8 left-5">
-          <h4 class="text-2xl">R1T</h4>
+        <div
+          class="flex space-x-4 items-center absolute top-8 lg:bottom-8 lg:top-auto left-5"
+        >
+          <h4 class="md:text-2xl text-md">R1T</h4>
           <span class="inline-block text-[12px] font-thin bg-gray-900"> |</span>
           <p class="text-[14px]">Up to 400 miles of range</p>
         </div>
-        <div class="millage-buttons--left absolute bottom-8 right-5 opacity-0">
-          <Button variant="btn-outline--inverted" text="Reserve an R1T" />
+        <div
+          class="millage-buttons--left md:millage-desktop absolute md:bottom-8 bottom-6 left-5 md:left-auto right-5 grid gap-4 md:grid-flow-col"
+        >
+          <Button variant="btn-outline--inverted" text="Book a demo drive" />
           <Button variant="btn-filled--inverted" text="Order Now" />
         </div>
       </div>
     </div>
   </div>
   <div
-    class="col-span-6 bg-psa w-[48.5%] h-[450px] millage-right right-5 absolute"
+    class="col-span-6 bg-psa md:w-[46.5%] lg:w-[48.5%] h-[450px] md:h-[350px] lg:h-[450px] millage-right md:millage-desktop right-5 md:absolute mb-6 md:mb-0"
   >
-    <div class="relative h-[450px]">
+    <div class="relative h-[450px] lg:h-[450px] md:h-[350px]">
       <div class="slider-container">
         {
           r1sImages.map((image) => (
             <img
               src={`/assets/r1s/${image}`}
               alt="R1T"
-              class="object-center  object-scale-down hidden absolute-centered h-[440px] slider-item--right"
+              class="object-center  object-scale-down absolute-centered  h-[440px] md:h-[350px] lg:h-[450px] slider-item--right"
             />
           ))
         }
       </div>
 
       <div>
-        <div class="flex space-x-4 items-center absolute bottom-8 left-5">
-          <h4 class="text-2xl">R1S</h4>
+        <div
+          class="flex space-x-4 items-center absolute top-8 lg:bottom-8 lg:top-auto left-5"
+        >
+          <h4 class="md:text-2xl text-md">R1S</h4>
           <span class="inline-block text-[12px] font-thin bg-gray-900"> |</span>
           <p class="text-[14px]">Up to 390 miles of range</p>
         </div>
-        <div class="millage-buttons--right absolute bottom-8 right-5 opacity-0">
-          <Button variant="btn-outline--inverted" text="Reserve an R1T" />
+        <div
+          class="millage-buttons--right md:millage-desktop absolute md:bottom-8 bottom-6 left-5 md:left-auto right-5 grid gap-4 md:grid-flow-col"
+        >
+          <Button variant="btn-outline--inverted" text="Book a demo drive" />
           <Button variant="btn-filled--inverted" text="Order Now" />
         </div>
       </div>

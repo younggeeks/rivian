@@ -17,7 +17,7 @@ const { r1tImages, r1sImages } = Astro.props;
   let rightImages = document.querySelectorAll(".slider-item--right");
 
   let leftTimer: number | undefined;
-  let rightTimer;
+  let rightTimer: number | undefined;
   (leftImages[0] as any).style.display = "block";
   (rightImages[0] as any).style.display = "block";
 
@@ -27,27 +27,35 @@ const { r1tImages, r1sImages } = Astro.props;
   });
   let tl2 = gsap.timeline({ defaults: { clearProps: true } });
   leftMillage?.addEventListener("mouseenter", () => {
-    animateMillage("left");
+    gsap.matchMedia().add("(min-width: 769px)", () => {
+      animateMillage("left");
+    });
     leftTimer = setTimeout(() => {
       animateCars("left");
     }, 800);
   });
   rightMillage?.addEventListener("mouseenter", () => {
-    animateMillage("right");
+    gsap.matchMedia().add("(min-width: 769px)", () => {
+      animateMillage("right");
+    });
     rightTimer = setTimeout(() => {
       animateCars("right");
     }, 800);
   });
   leftMillage?.addEventListener("mouseleave", () => {
     clearTimeout(leftTimer);
-    animateMillage("reset");
+    gsap.matchMedia().add("(min-width: 769px)", () => {
+      animateMillage("reset");
+    });
     tl.clear().revert();
     tl2.clear().revert();
-    (leftImages[0] as any).style.display = "block";
   });
 
   rightMillage?.addEventListener("mouseleave", () => {
-    animateMillage("reset");
+    clearTimeout(rightTimer);
+    gsap.matchMedia().add("(min-width: 769px)", () => {
+      animateMillage("reset");
+    });
     tl.clear().revert();
     tl2.clear().revert();
   });
@@ -93,16 +101,17 @@ const { r1tImages, r1sImages } = Astro.props;
       duration: 1,
     });
 
-    gsap.to(".millage-buttons--left", {
-      opacity: item === "reset" ? 0 : item === "left" ? 1 : 0,
-      ease: "elastic.out(1,0.75)",
-      duration: 1,
-    });
-    gsap.to(".millage-buttons--right", {
-      opacity: item === "reset" ? 0 : item === "right" ? 1 : 0,
-      ease: "elastic.out(1,0.75)",
-      duration: 1,
-    });
+    // Deprecated (animating buttons )
+    // gsap.to(".millage-buttons--left", {
+    //   opacity: item === "reset" ? 0 : item === "left" ? 1 : 0,
+    //   ease: "elastic.out(1,0.75)",
+    //   duration: 1,
+    // });
+    // gsap.to(".millage-buttons--right", {
+    //   opacity: item === "reset" ? 0 : item === "right" ? 1 : 0,
+    //   ease: "elastic.out(1,0.75)",
+    //   duration: 1,
+    // });
   }
 
   const percentageMap = {
@@ -113,14 +122,14 @@ const { r1tImages, r1sImages } = Astro.props;
 </script>
 
 <div
-  class="2xl:h-[86vh] 2xl:min-h-[86vh] lg:min-h-[98vh] lg:h-[98vh] checked bg-[#f9f2e8] bg-[url('/assets/square-150.png')] bg-fixed"
+  class="2xl:h-[86vh] lg:h-[98vh] checked bg-[#f9f2e8] md:bg-[url('/assets/square-150.png')] lg:min-h-[850px] 2xl:min-h-[900px] md:min-h-[830px] bg-fixed flex md:block flex-col"
 >
-  <div class="max-w-screen-lg mx-auto lg:min-w-[1000px]">
-    <div class="grid grid-cols-12 py-28">
-      <div class="col-span-6">
-        <h4 class="text-5xl">Vehicles made for the planet</h4>
+  <div class="md:max-w-screen-lg max-w-sm mx-auto lg:min-w-[1000px]">
+    <div class="grid grid-cols-12 md:py-28 py-16">
+      <div class="md:col-span-6 col-span-12 md:mb-0 mb-10">
+        <h4 class="md:text-5xl text-4xl">Vehicles made for the planet</h4>
       </div>
-      <div class="col-span-6 text-xl">
+      <div class="md:col-span-6 col-span-12 text-xl">
         <p>
           Whether it's taking families on new adventures or helping fleets
           electrify at scale, our vehicles all share a common goal - preserving
