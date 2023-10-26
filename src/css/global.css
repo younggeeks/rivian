@@ -69,6 +69,10 @@
   transition: background 0.3;
 }
 
+.transparent-nav:hover .main-link:after{
+   background:white;
+}
+
 .default-nav {
   background: white;
   color:black;
@@ -92,6 +96,7 @@
   background:black;
   transform: translateX(-101%);
 }
+
 a.main-link:hover:after {
   transform: translateX(0);
   transition: transform 0.4s;
