@@ -13,10 +13,10 @@ const { imagePath, category, copy, className } = Astro.props as Props;
   <img
     src={imagePath}
     alt="Vancouver"
-    class={`group-hover:scale-[1.03] transition-transform duration-700 ${className} `}
+    class={` rounded-3xl transition-transform duration-700 ${className} `}
   />
-  <div class="relative flex justify-between mt-4">
-    <div class="flex items-center space-x-6">
+  <div class="relative flex flex-col justify-between mt-4 sm:flex-row sm:items-center">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
       <h4 class="text-2xl">{category}</h4>
       <span class="text-sm">{copy}</span>
     </div>

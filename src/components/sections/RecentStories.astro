@@ -1,23 +1,27 @@
 ---
 import StoryLink from "../StoryLink.astro";
-
+import MobileRecentStoryCard from "./MobileRecentStoryCard.astro";
+import story3 from "../../assets/80823_q2earnings2023_1x1_ddjpol.webp";
+import story2 from "../../assets/83023_dualmotor_epa_1x1_rhjm1t.jpeg";
+import story1 from "../../assets/9623_RANBRP_1x1_vldjls.jpeg";
+import { Image } from "astro:assets";
 const stories = [
   {
     date: "8.4.23",
     title:
       " Irvine,CA - Rivian Meets Q2 Targets and Increases 2023 Production Goal",
-    image: "/assets/story3.jpeg",
+    image: story1,
   },
   {
     date: "8.4.23",
     title: "Vancouver, BC - Rivian Opens First Space In Canada",
-    image: "/assets/story1.webp",
+    image: story2,
   },
   {
     date: "8.4.23",
     title:
       " Starfire Mine, KY - Rivian announces Solar Project on former Coal Mine",
-    image: "/assets/story2.jpeg",
+    image: story3,
   },
 ];
 ---
@@ -56,7 +60,9 @@ const stories = [
     });
   });
 </script>
-<div class="grid grid-cols-2 xl:max-w-7xl mx-auto items-start relative">
+<div
+  class="md:grid grid-cols-2 xl:max-w-7xl mx-auto items-start md:my-20 relative hidden"
+>
   <div class="mt-20">
     <h3 class="text-5xl font-light mb-12">Recent Stories</h3>
     {
@@ -74,29 +80,48 @@ const stories = [
     <button class="px-10 bg-black text-white py-4 mb-20"> View All</button>
   </div>
   <div class="relative h-full">
-    <img
+    <Image
       alt=""
-      src="/assets/story1.webp"
+      src={story1}
       id="story1_image"
-      class="opacity-0 absolute top-0 h-full"
+      class="opacity-0 absolute top-0 h-full rounded-xl object-cover"
     />
-    <img
+    <Image
       alt=""
-      src="/assets/story2.jpeg"
+      src={story2}
       id="story2_image"
-      class="opacity-0 absolute top-0 h-full"
+      class="opacity-0 absolute top-0 h-full rounded-xl object-cover"
     />
-    <img
-      src="/assets/story3.jpeg"
+    <Image
+      src={story3}
       alt=""
       id="story3_image"
-      class="absolute top-0 opacity-0 h-full"
+      class="absolute top-0 opacity-0 h-full rounded-xl object-cover"
     />
   </div>
 </div>
+<!-- Mobile -->
+<div class="mx-4 block md:hidden">
+  <h3 class="text-3xl md:mb-12 my-9">Recent Stories</h3>
+  {
+    stories.map((story, index) => {
+      return (
+        <MobileRecentStoryCard
+          date={story.date}
+          title={story.title}
+          link="/"
+          photo={story.image}
+        />
+      );
+    })
+  }
+</div>
+<!-- Mobile  -->
 <div class="h-[220px] bg-black flex items-center">
-  <div class="2xl:w-1/2 items-center px-[50px] grid grid-cols-2 gap-10">
-    <h4 class="text-white text-2xl max-w-sm">
+  <div
+    class="2xl:w-1/2 items-center px-[50px] grid md:grid-cols-2 grid-cols-1 md:gap-10 gap-5"
+  >
+    <h4 class="text-white md:text-2xl text-xl max-w-sm">
       Subscribe to learn about our latest new, updates ad adventures.
     </h4>
 

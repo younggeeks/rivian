@@ -4,16 +4,19 @@ import Button from "../Button.astro";
 
 <div
   class="h-screen min-h-[50v] bg-[url('/assets/Homepage_Hero_kwb9yy.webp')] bg-cover flex items-center justify-items-start hero"
+  style="background-position-x: center;"
 >
-  <div class="max-w-screen-2xl mx-auto lg:min-w-[1400px]">
+  <div
+    class="max-w-screen-2xl mx-auto lg:min-w-[1400px] self-end md:self-auto mb-10 md:mb-0"
+  >
     <div>
-      <h2 class="text-white text-7xl mb-10">
+      <h2 class="text-white md:text-7xl text-5xl mb-10">
         The R1T is <br />
         ready to go.
       </h2>
-      <div class="space-x-1">
-        <Button text="Order an R1T" variant="btn-filled--default" />
+      <div class="space-x-1 font-light">
         <Button text="Book a demo drive" variant="btn-outline--default" />
+        <Button text="Order Now" variant="btn-filled--default" />
       </div>
     </div>
   </div>
